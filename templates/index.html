@@ -8,123 +8,180 @@
     <link rel="manifest" href="/manifest.json">
     <style>
         * { box-sizing: border-box; }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f3f4f6;
             color: #111827;
         }
+
         .wrap {
-            max-width: 700px;
+            max-width: 760px;
             margin: 0 auto;
             padding: 16px;
         }
+
         .card {
-            background: #fff;
-            border-radius: 14px;
+            background: #ffffff;
+            border-radius: 16px;
             padding: 16px;
             box-shadow: 0 4px 14px rgba(0,0,0,0.08);
             margin-bottom: 16px;
         }
+
         h1 {
             font-size: 24px;
             margin: 0 0 8px;
         }
+
         .muted {
             color: #6b7280;
             font-size: 14px;
             margin-bottom: 14px;
+            line-height: 1.5;
         }
+
         .search-row {
             display: flex;
             gap: 8px;
         }
+
         input {
             flex: 1;
             padding: 14px;
             border: 1px solid #d1d5db;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
+            min-width: 0;
         }
+
         button {
             padding: 14px 18px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             background: #111827;
             color: white;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
         }
+
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
+
         .msg {
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-top: 12px;
             font-size: 15px;
+            line-height: 1.45;
         }
+
         .info { background: #e0f2fe; color: #075985; }
         .warn { background: #fff7ed; color: #9a3412; }
         .err  { background: #fef2f2; color: #991b1b; }
         .ok   { background: #ecfdf5; color: #065f46; }
+
         .result-card {
             background: white;
-            border-radius: 14px;
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 4px 14px rgba(0,0,0,0.08);
             margin-top: 16px;
         }
+
         .result-card img {
             width: 100%;
             display: block;
             background: #f9fafb;
         }
+
         .result-body {
-            padding: 14px;
+            padding: 16px;
         }
+
         .result-title {
             font-size: 18px;
             font-weight: 700;
-            margin-bottom: 8px;
-            line-height: 1.35;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
+
         .meta {
             font-size: 14px;
             color: #374151;
-            margin: 4px 0;
+            margin: 6px 0;
+            line-height: 1.45;
         }
+
         .tag {
             display: inline-block;
-            padding: 4px 8px;
+            padding: 5px 9px;
             border-radius: 999px;
             font-size: 12px;
             font-weight: 700;
             margin-right: 6px;
             margin-top: 6px;
         }
-        .tag-live { background: #dcfce7; color: #166534; }
-        .tag-cache { background: #dbeafe; color: #1d4ed8; }
+
+        .tag-live   { background: #dcfce7; color: #166534; }
+        .tag-cache  { background: #dbeafe; color: #1d4ed8; }
         .tag-manual { background: #f3e8ff; color: #7e22ce; }
-        .tag-other { background: #e5e7eb; color: #374151; }
+        .tag-other  { background: #e5e7eb; color: #374151; }
+
         a.link {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 12px;
             text-decoration: none;
             color: #2563eb;
             font-weight: 600;
         }
+
+        .no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            padding: 16px;
+        }
+
         pre.debug {
             white-space: pre-wrap;
             word-break: break-word;
             background: #111827;
             color: #f9fafb;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 12px;
             overflow: auto;
             margin-top: 10px;
+        }
+
+        .top-summary {
+            margin-top: 12px;
+        }
+
+        .small {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 640px) {
+            .search-row {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -132,7 +189,10 @@
     <div class="wrap">
         <div class="card">
             <h1>Lamelif Ürün Bulucu</h1>
-            <div class="muted">Ürün kodunu yaz, kayıtlıysa ya da bulunabiliyorsa görseli getirilsin.</div>
+            <div class="muted">
+                Ürün kodunu yaz. Kod katalogda varsa ürün mutlaka listelenir.
+                Görsel varsa gösterilir, yoksa ürün bilgisi yine görünür.
+            </div>
 
             <div class="search-row">
                 <input
@@ -147,7 +207,7 @@
                 <button id="searchBtn" onclick="searchProduct()">Ara</button>
             </div>
 
-            <div id="message"></div>
+            <div id="message" class="top-summary"></div>
         </div>
 
         <div id="results"></div>
@@ -197,25 +257,7 @@
                     return;
                 }
 
-                if (data.results && data.results.length > 0) {
-                    const fromCache = data.from_cache === true;
-                    const sourceText = fromCache ? "Kayıtlı görseller gösteriliyor." : "Yeni sonuç bulundu.";
-                    showMessage(sourceText, fromCache ? "ok" : "info");
-
-                    renderResults(data.results, data.product_name || "");
-                    return;
-                }
-
-                if (data.product_name) {
-                    showMessage(
-                        `${escapeHtml(data.code)} katalogda var. Ürün adı: ${escapeHtml(data.product_name)}. ` +
-                        `${escapeHtml(data.message || "Ama görsel henüz bulunamadı.")}`,
-                        "warn"
-                    );
-                    return;
-                }
-
-                showMessage(data.message || "Sonuç bulunamadı.", "warn");
+                renderSearchResponse(data);
 
             } catch (err) {
                 showMessage("İstek sırasında hata oluştu: " + escapeHtml(err.message), "err");
@@ -225,44 +267,111 @@
             }
         }
 
-        function renderResults(results, productName) {
+        function renderSearchResponse(data) {
             const resultsBox = document.getElementById("results");
             resultsBox.innerHTML = "";
 
-            results.forEach(item => {
-                const source = (item.source || "").toLowerCase();
-                const tagClass = getTagClass(source);
+            const foundInCatalog = data.found_in_catalog === true;
+            const results = Array.isArray(data.results) ? data.results : [];
+            const productName = data.product_name || "";
+            const productId = data.product_id || "";
+            const categoryName = data.category_name || "";
+            const price = data.price || "";
+            const code = data.code || "";
 
-                const card = document.createElement("div");
-                card.className = "result-card";
+            if (!foundInCatalog) {
+                showMessage(data.message || "Bu kod katalogda yok.", "warn");
+                return;
+            }
 
-                card.innerHTML = `
-                    ${item.image_url ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || item.code || 'Ürün görseli')}">` : ""}
-                    <div class="result-body">
-                        <div class="result-title">${escapeHtml(item.title || productName || item.code || "Ürün")}</div>
-                        <div class="meta"><b>Kod:</b> ${escapeHtml(item.code || "-")}</div>
-                        ${productName ? `<div class="meta"><b>Katalog adı:</b> ${escapeHtml(productName)}</div>` : ""}
-                        <div class="meta">
-                            <span class="tag ${tagClass}">${escapeHtml(item.source || "bilinmiyor")}</span>
-                        </div>
-                        ${item.page_url ? `<a class="link" href="${escapeAttr(item.page_url)}" target="_blank" rel="noopener noreferrer">Ürün sayfasını aç</a>` : ""}
+            if (results.length > 0) {
+                const cacheText = data.from_cache ? "Kayıtlı görseller gösteriliyor." : (data.message || "Ürün bulundu.");
+                showMessage(cacheText, data.from_cache ? "ok" : "info");
+            } else {
+                showMessage(
+                    data.message || "Ürün katalogda bulundu ama bu ürün için henüz görsel kaydı yok.",
+                    "warn"
+                );
+            }
+
+            if (results.length > 0) {
+                results.forEach(item => {
+                    resultsBox.appendChild(
+                        buildResultCard({
+                            code: item.code || code,
+                            title: item.title || productName || code,
+                            image_url: item.image_url || "",
+                            page_url: item.page_url || "",
+                            source: item.source || "other",
+                            product_name: productName,
+                            product_id: productId,
+                            category_name: categoryName,
+                            price: price
+                        })
+                    );
+                });
+            } else {
+                resultsBox.appendChild(
+                    buildResultCard({
+                        code: code,
+                        title: productName || code,
+                        image_url: "",
+                        page_url: "",
+                        source: "catalog",
+                        product_name: productName,
+                        product_id: productId,
+                        category_name: categoryName,
+                        price: price
+                    })
+                );
+            }
+        }
+
+        function buildResultCard(item) {
+            const card = document.createElement("div");
+            card.className = "result-card";
+
+            const tagClass = getTagClass(item.source);
+
+            card.innerHTML = `
+                ${item.image_url
+                    ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || item.code || 'Ürün görseli')}">`
+                    : `<div class="no-image">Bu ürün için henüz kayıtlı görsel yok</div>`
+                }
+                <div class="result-body">
+                    <div class="result-title">${escapeHtml(item.title || item.product_name || item.code || "Ürün")}</div>
+
+                    <div class="meta"><b>Kod:</b> ${escapeHtml(item.code || "-")}</div>
+                    ${item.product_name ? `<div class="meta"><b>Ürün adı:</b> ${escapeHtml(item.product_name)}</div>` : ""}
+                    ${item.product_id ? `<div class="meta"><b>Ürün ID:</b> ${escapeHtml(item.product_id)}</div>` : ""}
+                    ${item.category_name ? `<div class="meta"><b>Kategori:</b> ${escapeHtml(item.category_name)}</div>` : ""}
+                    ${item.price ? `<div class="meta"><b>Fiyat:</b> ${escapeHtml(item.price)}</div>` : ""}
+
+                    <div class="meta">
+                        <span class="tag ${tagClass}">${escapeHtml(item.source || "other")}</span>
                     </div>
-                `;
 
-                resultsBox.appendChild(card);
-            });
+                    ${item.page_url
+                        ? `<a class="link" href="${escapeAttr(item.page_url)}" target="_blank" rel="noopener noreferrer">Ürün sayfasını aç</a>`
+                        : `<div class="small" style="margin-top:10px;">Canlı ürün linki kayıtlı değil.</div>`
+                    }
+                </div>
+            `;
+
+            return card;
         }
 
         function getTagClass(source) {
-            if (source.includes("manual")) return "tag-manual";
-            if (source.includes("cache")) return "tag-cache";
-            if (source.includes("live")) return "tag-live";
+            const s = String(source || "").toLowerCase();
+            if (s.includes("manual")) return "tag-manual";
+            if (s.includes("cache")) return "tag-cache";
+            if (s.includes("live")) return "tag-live";
             return "tag-other";
         }
 
         function showMessage(text, type) {
             const messageBox = document.getElementById("message");
-            messageBox.innerHTML = `<div class="msg ${type}">${text}</div>`;
+            messageBox.innerHTML = `<div class="msg ${type}">${escapeHtml(text)}</div>`;
         }
 
         function escapeHtml(str) {
