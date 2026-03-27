@@ -1,228 +1,282 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Lamelif Ürün Görsel Bulucu</title>
-  <meta name="theme-color" content="#111827">
-  <link rel="manifest" href="/manifest.json">
-  <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --card: #1f2937;
-      --text: #f9fafb;
-      --muted: #cbd5e1;
-      --accent: #22c55e;
-      --danger: #ef4444;
-      --border: #334155;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg, #020617, var(--bg));
-      color: var(--text);
-    }
-    .wrap {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    .panel {
-      background: rgba(17,24,39,.92);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 8px 28px rgba(0,0,0,.25);
-    }
-    h1 { margin: 0 0 8px; font-size: 26px; }
-    p { color: var(--muted); line-height: 1.45; }
-    form {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      margin-top: 14px;
-    }
-    input {
-      width: 100%;
-      padding: 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #0b1220;
-      color: var(--text);
-      font-size: 18px;
-      text-transform: uppercase;
-    }
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 16px 18px;
-      background: var(--accent);
-      color: #052e16;
-      font-weight: 700;
-      font-size: 16px;
-    }
-    .hint { font-size: 14px; margin-top: 10px; }
-    .status {
-      margin: 14px 0;
-      padding: 12px 14px;
-      border-radius: 14px;
-      display: none;
-    }
-    .status.show { display: block; }
-    .status.error { background: rgba(239,68,68,.12); color: #fecaca; border: 1px solid rgba(239,68,68,.35); }
-    .status.info { background: rgba(34,197,94,.12); color: #dcfce7; border: 1px solid rgba(34,197,94,.35); }
-    .grid {
-      display: grid;
-      gap: 16px;
-      margin-top: 16px;
-    }
-    .result {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-    }
-    .imgbox {
-      background: #fff;
-      aspect-ratio: 4 / 5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .imgbox img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #fff;
-    }
-    .content { padding: 14px; }
-    .title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-    .meta { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .actions a {
-      text-decoration: none;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 14px;
-    }
-    .badge {
-      display: inline-block;
-      font-size: 12px;
-      padding: 6px 8px;
-      border-radius: 999px;
-      background: rgba(34,197,94,.16);
-      color: #bbf7d0;
-      margin-bottom: 10px;
-    }
-    @media (max-width: 600px) {
-      form { grid-template-columns: 1fr; }
-      button { width: 100%; }
-      h1 { font-size: 22px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamelif Ürün Bulucu</title>
+    <meta name="theme-color" content="#111827">
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+        .wrap {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0 0 8px;
+        }
+        .muted {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+        .search-row {
+            display: flex;
+            gap: 8px;
+        }
+        input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 14px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #111827;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .msg {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 12px;
+            font-size: 15px;
+        }
+        .info { background: #e0f2fe; color: #075985; }
+        .warn { background: #fff7ed; color: #9a3412; }
+        .err  { background: #fef2f2; color: #991b1b; }
+        .ok   { background: #ecfdf5; color: #065f46; }
+        .result-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            margin-top: 16px;
+        }
+        .result-card img {
+            width: 100%;
+            display: block;
+            background: #f9fafb;
+        }
+        .result-body {
+            padding: 14px;
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+        .meta {
+            font-size: 14px;
+            color: #374151;
+            margin: 4px 0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 6px;
+            margin-top: 6px;
+        }
+        .tag-live { background: #dcfce7; color: #166534; }
+        .tag-cache { background: #dbeafe; color: #1d4ed8; }
+        .tag-manual { background: #f3e8ff; color: #7e22ce; }
+        .tag-other { background: #e5e7eb; color: #374151; }
+        a.link {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 600;
+        }
+        pre.debug {
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #111827;
+            color: #f9fafb;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            overflow: auto;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="panel">
-      <h1>Lamelif Ürün Görsel Bulucu</h1>
-      <p>Depoda ürün kodunu yaz. Sistem önce Lamelif ürün sayfasını bulur, sonra görseli getirir. Telefon ekranından ürünle karşılaştırırsın.</p>
-      <form id="searchForm">
-        <input id="codeInput" name="code" placeholder="Örn: DNM0520" autocomplete="off" autocapitalize="characters" enterkeyhint="search">
-        <button type="submit">Görseli Bul</button>
-      </form>
-      <div class="hint">İpucu: Kodlar boşluksuz ve büyük harfle daha iyi sonuç verir.</div>
-      <div id="status" class="status"></div>
+    <div class="wrap">
+        <div class="card">
+            <h1>Lamelif Ürün Bulucu</h1>
+            <div class="muted">Ürün kodunu yaz, kayıtlıysa ya da bulunabiliyorsa görseli getirilsin.</div>
+
+            <div class="search-row">
+                <input
+                    type="text"
+                    id="code"
+                    placeholder="Örn: BT4616"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    onkeydown="if(event.key==='Enter'){searchProduct();}"
+                >
+                <button id="searchBtn" onclick="searchProduct()">Ara</button>
+            </div>
+
+            <div id="message"></div>
+        </div>
+
+        <div id="results"></div>
     </div>
 
-    <div id="results" class="grid"></div>
-  </div>
+    <script>
+        async function searchProduct() {
+            const input = document.getElementById("code");
+            const btn = document.getElementById("searchBtn");
+            const messageBox = document.getElementById("message");
+            const resultsBox = document.getElementById("results");
 
-  <script>
-    const form = document.getElementById('searchForm');
-    const input = document.getElementById('codeInput');
-    const statusEl = document.getElementById('status');
-    const resultsEl = document.getElementById('results');
+            const code = input.value.trim().toUpperCase();
 
-    function setStatus(message, type = 'info') {
-      statusEl.textContent = message;
-      statusEl.className = `status show ${type}`;
-    }
+            resultsBox.innerHTML = "";
+            messageBox.innerHTML = "";
 
-    function clearStatus() {
-      statusEl.className = 'status';
-      statusEl.textContent = '';
-    }
+            if (!code) {
+                showMessage("Lütfen ürün kodu gir.", "warn");
+                return;
+            }
 
-    function escapeHtml(text) {
-      return text
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-    }
+            btn.disabled = true;
+            btn.textContent = "Aranıyor...";
+            showMessage("Arama yapılıyor...", "info");
 
-    function renderResults(code, results) {
-      resultsEl.innerHTML = '';
-      if (!results.length) {
-        setStatus(`${code} için görsel bulunamadı.`, 'error');
-        return;
-      }
-      clearStatus();
-      results.forEach((item, index) => {
-        const card = document.createElement('article');
-        card.className = 'result';
-        card.innerHTML = `
-          <div class="imgbox">
-            ${item.image_url ? `<img src="${item.image_url}" alt="${escapeHtml(item.title)}" loading="${index === 0 ? 'eager' : 'lazy'}">` : `<div>Görsel yok</div>`}
-          </div>
-          <div class="content">
-            ${item.matched_code ? '<div class="badge">Kod eşleşti</div>' : '<div class="badge">Yakın sonuç</div>'}
-            <div class="title">${escapeHtml(item.title)}</div>
-            <div class="meta">Kaynak: ${escapeHtml(item.source)}</div>
-            <div class="actions">
-              <a href="${item.page_url}" target="_blank" rel="noopener noreferrer">Ürün sayfasını aç</a>
-              ${item.image_url ? `<a href="${item.image_url}" target="_blank" rel="noopener noreferrer">Görseli aç</a>` : ''}
-            </div>
-          </div>
-        `;
-        resultsEl.appendChild(card);
-      });
-    }
+            try {
+                const response = await fetch("/api/search?code=" + encodeURIComponent(code));
+                const rawText = await response.text();
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const code = input.value.trim().toUpperCase();
-      if (!code) {
-        setStatus('Lütfen ürün kodu gir.', 'error');
-        return;
-      }
+                let data;
+                try {
+                    data = JSON.parse(rawText);
+                } catch (jsonErr) {
+                    showMessage("Sunucudan JSON yerine farklı bir cevap geldi.", "err");
+                    resultsBox.innerHTML = `
+                        <div class="card">
+                            <b>Ham cevap:</b>
+                            <pre class="debug">${escapeHtml(rawText)}</pre>
+                        </div>
+                    `;
+                    return;
+                }
 
-      setStatus(`${code} aranıyor...`, 'info');
-      resultsEl.innerHTML = '';
+                if (!response.ok) {
+                    showMessage(data.error || "Sunucu hatası oluştu.", "err");
+                    return;
+                }
 
-      try {
-        const res = await fetch(`/api/search?code=${encodeURIComponent(code)}`);
-        const data = await res.json();
-        if (!res.ok || !data.ok) {
-          throw new Error(data.error || 'Arama başarısız oldu.');
+                if (data.results && data.results.length > 0) {
+                    const fromCache = data.from_cache === true;
+                    const sourceText = fromCache ? "Kayıtlı görseller gösteriliyor." : "Yeni sonuç bulundu.";
+                    showMessage(sourceText, fromCache ? "ok" : "info");
+
+                    renderResults(data.results, data.product_name || "");
+                    return;
+                }
+
+                if (data.product_name) {
+                    showMessage(
+                        `${escapeHtml(data.code)} katalogda var. Ürün adı: ${escapeHtml(data.product_name)}. ` +
+                        `${escapeHtml(data.message || "Ama görsel henüz bulunamadı.")}`,
+                        "warn"
+                    );
+                    return;
+                }
+
+                showMessage(data.message || "Sonuç bulunamadı.", "warn");
+
+            } catch (err) {
+                showMessage("İstek sırasında hata oluştu: " + escapeHtml(err.message), "err");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Ara";
+            }
         }
-        renderResults(data.code, data.results || []);
-      } catch (err) {
-        setStatus(err.message || 'Bir hata oluştu.', 'error');
-      }
-    });
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-      });
-    }
-  </script>
+        function renderResults(results, productName) {
+            const resultsBox = document.getElementById("results");
+            resultsBox.innerHTML = "";
+
+            results.forEach(item => {
+                const source = (item.source || "").toLowerCase();
+                const tagClass = getTagClass(source);
+
+                const card = document.createElement("div");
+                card.className = "result-card";
+
+                card.innerHTML = `
+                    ${item.image_url ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || item.code || 'Ürün görseli')}">` : ""}
+                    <div class="result-body">
+                        <div class="result-title">${escapeHtml(item.title || productName || item.code || "Ürün")}</div>
+                        <div class="meta"><b>Kod:</b> ${escapeHtml(item.code || "-")}</div>
+                        ${productName ? `<div class="meta"><b>Katalog adı:</b> ${escapeHtml(productName)}</div>` : ""}
+                        <div class="meta">
+                            <span class="tag ${tagClass}">${escapeHtml(item.source || "bilinmiyor")}</span>
+                        </div>
+                        ${item.page_url ? `<a class="link" href="${escapeAttr(item.page_url)}" target="_blank" rel="noopener noreferrer">Ürün sayfasını aç</a>` : ""}
+                    </div>
+                `;
+
+                resultsBox.appendChild(card);
+            });
+        }
+
+        function getTagClass(source) {
+            if (source.includes("manual")) return "tag-manual";
+            if (source.includes("cache")) return "tag-cache";
+            if (source.includes("live")) return "tag-live";
+            return "tag-other";
+        }
+
+        function showMessage(text, type) {
+            const messageBox = document.getElementById("message");
+            messageBox.innerHTML = `<div class="msg ${type}">${text}</div>`;
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function escapeAttr(str) {
+            return escapeHtml(str);
+        }
+    </script>
 </body>
 </html>
