@@ -4,374 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lamelif Ürün Bulucu</title>
-    <meta name="theme-color" content="#111827">
-    <link rel="manifest" href="/manifest.json">
     <style>
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f4f6;
-            color: #111827;
-        }
-
-        .wrap {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-
-        .card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin: 0 0 8px;
-        }
-
-        .muted {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 14px;
-            line-height: 1.5;
-        }
-
-        .search-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        input {
-            flex: 1;
-            padding: 14px;
-            border: 1px solid #d1d5db;
-            border-radius: 12px;
-            font-size: 16px;
-            min-width: 0;
-        }
-
-        button {
-            padding: 14px 18px;
-            border: none;
-            border-radius: 12px;
-            background: #111827;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .msg {
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: 12px;
-            font-size: 15px;
-            line-height: 1.45;
-        }
-
-        .info { background: #e0f2fe; color: #075985; }
-        .warn { background: #fff7ed; color: #9a3412; }
-        .err  { background: #fef2f2; color: #991b1b; }
-        .ok   { background: #ecfdf5; color: #065f46; }
-
-        .result-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-            margin-top: 16px;
-        }
-
-        .result-card img {
-            width: 100%;
-            display: block;
-            background: #f9fafb;
-        }
-
-        .result-body {
-            padding: 16px;
-        }
-
-        .result-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .meta {
-            font-size: 14px;
-            color: #374151;
-            margin: 6px 0;
-            line-height: 1.45;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-right: 6px;
-            margin-top: 6px;
-        }
-
-        .tag-live   { background: #dcfce7; color: #166534; }
-        .tag-cache  { background: #dbeafe; color: #1d4ed8; }
-        .tag-manual { background: #f3e8ff; color: #7e22ce; }
-        .tag-other  { background: #e5e7eb; color: #374151; }
-
-        a.link {
-            display: inline-block;
-            margin-top: 12px;
-            text-decoration: none;
-            color: #2563eb;
-            font-weight: 600;
-        }
-
-        .no-image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 180px;
-            background: #f9fafb;
-            color: #6b7280;
-            font-size: 15px;
-            font-weight: bold;
-            text-align: center;
-            padding: 16px;
-        }
-
-        pre.debug {
-            white-space: pre-wrap;
-            word-break: break-word;
-            background: #111827;
-            color: #f9fafb;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            overflow: auto;
-            margin-top: 10px;
-        }
-
-        .top-summary {
-            margin-top: 12px;
-        }
-
-        .small {
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        @media (max-width: 640px) {
-            .search-row {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-            }
-        }
+        body { font-family: Arial, sans-serif; background:#f3f4f6; margin:0; }
+        .wrap { max-width: 760px; margin: 0 auto; padding: 16px; }
+        .card { background:#fff; border-radius:14px; padding:16px; margin-bottom:16px; box-shadow:0 4px 14px rgba(0,0,0,.08); }
+        .row { display:flex; gap:8px; }
+        input { flex:1; padding:14px; font-size:16px; border:1px solid #ccc; border-radius:10px; }
+        button { padding:14px 18px; border:0; background:#111827; color:#fff; border-radius:10px; font-size:16px; }
+        .msg { margin-top:12px; padding:12px; border-radius:10px; }
+        .ok { background:#ecfdf5; color:#065f46; }
+        .warn { background:#fff7ed; color:#9a3412; }
+        .err { background:#fef2f2; color:#991b1b; }
+        .item { background:#fff; border-radius:14px; padding:14px; margin-top:14px; box-shadow:0 4px 14px rgba(0,0,0,.08); }
+        .title { font-weight:700; font-size:18px; margin-bottom:8px; }
+        .meta { font-size:14px; margin:4px 0; color:#374151; }
+        pre { white-space:pre-wrap; word-break:break-word; background:#111827; color:#fff; padding:12px; border-radius:10px; }
+        @media (max-width: 640px){ .row { flex-direction:column; } button { width:100%; } }
     </style>
 </head>
 <body>
     <div class="wrap">
         <div class="card">
-            <h1>Lamelif Ürün Bulucu</h1>
-            <div class="muted">
-                Ürün kodunu yaz. Kod katalogda varsa ürün mutlaka listelenir.
-                Görsel varsa gösterilir, yoksa ürün bilgisi yine görünür.
+            <h2>Lamelif Ürün Bulucu</h2>
+            <div class="row">
+                <input id="code" placeholder="Örn: BT4616" onkeydown="if(event.key==='Enter') searchProduct()">
+                <button id="btn" onclick="searchProduct()">Ara</button>
             </div>
-
-            <div class="search-row">
-                <input
-                    type="text"
-                    id="code"
-                    placeholder="Örn: BT4616"
-                    autocomplete="off"
-                    autocapitalize="characters"
-                    spellcheck="false"
-                    onkeydown="if(event.key==='Enter'){searchProduct();}"
-                >
-                <button id="searchBtn" onclick="searchProduct()">Ara</button>
-            </div>
-
-            <div id="message" class="top-summary"></div>
+            <div id="message"></div>
         </div>
-
         <div id="results"></div>
     </div>
 
     <script>
         async function searchProduct() {
-            const input = document.getElementById("code");
-            const btn = document.getElementById("searchBtn");
-            const messageBox = document.getElementById("message");
-            const resultsBox = document.getElementById("results");
+            const code = document.getElementById("code").value.trim().toUpperCase();
+            const btn = document.getElementById("btn");
+            const message = document.getElementById("message");
+            const results = document.getElementById("results");
 
-            const code = input.value.trim().toUpperCase();
-
-            resultsBox.innerHTML = "";
-            messageBox.innerHTML = "";
+            message.innerHTML = "";
+            results.innerHTML = "";
 
             if (!code) {
-                showMessage("Lütfen ürün kodu gir.", "warn");
+                message.innerHTML = '<div class="msg warn">Kod gir.</div>';
                 return;
             }
 
             btn.disabled = true;
             btn.textContent = "Aranıyor...";
-            showMessage("Arama yapılıyor...", "info");
 
             try {
-                const response = await fetch("/api/search?code=" + encodeURIComponent(code));
-                const rawText = await response.text();
+                const res = await fetch("/api/search?code=" + encodeURIComponent(code));
+                const text = await res.text();
 
                 let data;
                 try {
-                    data = JSON.parse(rawText);
-                } catch (jsonErr) {
-                    showMessage("Sunucudan JSON yerine farklı bir cevap geldi.", "err");
-                    resultsBox.innerHTML = `
-                        <div class="card">
-                            <b>Ham cevap:</b>
-                            <pre class="debug">${escapeHtml(rawText)}</pre>
-                        </div>
+                    data = JSON.parse(text);
+                } catch {
+                    message.innerHTML = '<div class="msg err">JSON yerine başka cevap geldi.</div>';
+                    results.innerHTML = "<pre>" + escapeHtml(text) + "</pre>";
+                    return;
+                }
+
+                if (!res.ok) {
+                    message.innerHTML = '<div class="msg err">' + escapeHtml(data.error || "Hata") + '</div>';
+                    return;
+                }
+
+                if (!data.found_in_catalog) {
+                    message.innerHTML = '<div class="msg warn">' + escapeHtml(data.message || "Kod yok") + '</div>';
+                    return;
+                }
+
+                message.innerHTML = '<div class="msg ok">' + escapeHtml(data.message || "Bulundu") + '</div>';
+
+                (data.results || []).forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "item";
+                    div.innerHTML = `
+                        <div class="title">${escapeHtml(item.product_name || item.code)}</div>
+                        <div class="meta"><b>Kod:</b> ${escapeHtml(item.code || "")}</div>
+                        <div class="meta"><b>Ürün ID:</b> ${escapeHtml(item.product_id || "")}</div>
+                        <div class="meta"><b>Kategori:</b> ${escapeHtml(item.category_name || "")}</div>
+                        <div class="meta"><b>Fiyat:</b> ${escapeHtml(item.price || "")}</div>
+                        <div class="meta"><b>Renk:</b> ${escapeHtml(item.color || "")}</div>
+                        <div class="meta"><b>Beden:</b> ${escapeHtml(item.size || "")}</div>
+                        <div class="meta"><b>Barkod:</b> ${escapeHtml(item.barcode || "")}</div>
+                        <div class="meta"><b>Stok:</b> ${escapeHtml(item.stock || "")}</div>
                     `;
-                    return;
-                }
-
-                if (!response.ok) {
-                    showMessage(data.error || "Sunucu hatası oluştu.", "err");
-                    return;
-                }
-
-                renderSearchResponse(data);
+                    results.appendChild(div);
+                });
 
             } catch (err) {
-                showMessage("İstek sırasında hata oluştu: " + escapeHtml(err.message), "err");
+                message.innerHTML = '<div class="msg err">' + escapeHtml(err.message) + '</div>';
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Ara";
             }
-        }
-
-        function renderSearchResponse(data) {
-            const resultsBox = document.getElementById("results");
-            resultsBox.innerHTML = "";
-
-            const foundInCatalog = data.found_in_catalog === true;
-            const results = Array.isArray(data.results) ? data.results : [];
-            const productName = data.product_name || "";
-            const productId = data.product_id || "";
-            const categoryName = data.category_name || "";
-            const price = data.price || "";
-            const code = data.code || "";
-
-            if (!foundInCatalog) {
-                showMessage(data.message || "Bu kod katalogda yok.", "warn");
-                return;
-            }
-
-            if (results.length > 0) {
-                const cacheText = data.from_cache ? "Kayıtlı görseller gösteriliyor." : (data.message || "Ürün bulundu.");
-                showMessage(cacheText, data.from_cache ? "ok" : "info");
-            } else {
-                showMessage(
-                    data.message || "Ürün katalogda bulundu ama bu ürün için henüz görsel kaydı yok.",
-                    "warn"
-                );
-            }
-
-            if (results.length > 0) {
-                results.forEach(item => {
-                    resultsBox.appendChild(
-                        buildResultCard({
-                            code: item.code || code,
-                            title: item.title || productName || code,
-                            image_url: item.image_url || "",
-                            page_url: item.page_url || "",
-                            source: item.source || "other",
-                            product_name: productName,
-                            product_id: productId,
-                            category_name: categoryName,
-                            price: price
-                        })
-                    );
-                });
-            } else {
-                resultsBox.appendChild(
-                    buildResultCard({
-                        code: code,
-                        title: productName || code,
-                        image_url: "",
-                        page_url: "",
-                        source: "catalog",
-                        product_name: productName,
-                        product_id: productId,
-                        category_name: categoryName,
-                        price: price
-                    })
-                );
-            }
-        }
-
-        function buildResultCard(item) {
-            const card = document.createElement("div");
-            card.className = "result-card";
-
-            const tagClass = getTagClass(item.source);
-
-            card.innerHTML = `
-                ${item.image_url
-                    ? `<img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || item.code || 'Ürün görseli')}">`
-                    : `<div class="no-image">Bu ürün için henüz kayıtlı görsel yok</div>`
-                }
-                <div class="result-body">
-                    <div class="result-title">${escapeHtml(item.title || item.product_name || item.code || "Ürün")}</div>
-
-                    <div class="meta"><b>Kod:</b> ${escapeHtml(item.code || "-")}</div>
-                    ${item.product_name ? `<div class="meta"><b>Ürün adı:</b> ${escapeHtml(item.product_name)}</div>` : ""}
-                    ${item.product_id ? `<div class="meta"><b>Ürün ID:</b> ${escapeHtml(item.product_id)}</div>` : ""}
-                    ${item.category_name ? `<div class="meta"><b>Kategori:</b> ${escapeHtml(item.category_name)}</div>` : ""}
-                    ${item.price ? `<div class="meta"><b>Fiyat:</b> ${escapeHtml(item.price)}</div>` : ""}
-
-                    <div class="meta">
-                        <span class="tag ${tagClass}">${escapeHtml(item.source || "other")}</span>
-                    </div>
-
-                    ${item.page_url
-                        ? `<a class="link" href="${escapeAttr(item.page_url)}" target="_blank" rel="noopener noreferrer">Ürün sayfasını aç</a>`
-                        : `<div class="small" style="margin-top:10px;">Canlı ürün linki kayıtlı değil.</div>`
-                    }
-                </div>
-            `;
-
-            return card;
-        }
-
-        function getTagClass(source) {
-            const s = String(source || "").toLowerCase();
-            if (s.includes("manual")) return "tag-manual";
-            if (s.includes("cache")) return "tag-cache";
-            if (s.includes("live")) return "tag-live";
-            return "tag-other";
-        }
-
-        function showMessage(text, type) {
-            const messageBox = document.getElementById("message");
-            messageBox.innerHTML = `<div class="msg ${type}">${escapeHtml(text)}</div>`;
         }
 
         function escapeHtml(str) {
@@ -381,10 +110,6 @@
                 .replaceAll(">", "&gt;")
                 .replaceAll('"', "&quot;")
                 .replaceAll("'", "&#039;");
-        }
-
-        function escapeAttr(str) {
-            return escapeHtml(str);
         }
     </script>
 </body>
